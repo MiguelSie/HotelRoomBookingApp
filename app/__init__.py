@@ -15,7 +15,9 @@ app.config.from_object(Config)
 @app.route('/home', methods = ['GET', 'POST'])
 def index():
     form = dateForm()
-    
+    if form.validate_on_submit():
+        flash(f'Buscando vuelos para {form.dateStart.data} a {form.dateFinish.data} para {form.totPeople.data} personas', 'success')
+        return redirect(url_for('book'))
     return render_template('index.html', title='Home', form=form)
 
 @app.route('/rooms', methods = ['GET', 'POST'])
@@ -25,6 +27,12 @@ def rooms():
 @app.route("/booking", methods = ['GET', 'POST'])
 def book():
     form = bookingForm()
+    if form.validate_on_submit():
+        if form.name.data == "Miguel" and form.email.data == "miguel109737@gmail.com":
+            flash('¡Se ha realizado su reserva exitosamente!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Su reserva no se ha podido realizar.', 'danger')
     return render_template('booking.html', title='Bookings', form=form)
 
 if __name__ == '__main__':
