@@ -1,6 +1,6 @@
 {% extends "layout.html "%}
 {% block content %}
-<h1>Habitación seleccionada!</h1>
+<h1>¡Habitación seleccionada!</h1>
 <div class="content-section">
     <form method="POST" action = "">
         {{ form.hidden_tag() }}
@@ -34,6 +34,45 @@
                     {{ form.name(class = "form-control form-control-lg") }}
                 {% endif %}
             </div>
+
+            <div class = "form-group">
+                {{ form.surname.label(class = "form-control-label") }}
+                {% if form.surname.errors %}
+                    {{ form.surname(class = "form-control form-control-lg is-invalid") }}
+                    <div class = "invalid-feedback">
+                        {% for error in form.surname.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.surname(class = "form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <div class = "form-group">
+                {{ form.idUs.label(class = "form-control-label") }}
+                {% if form.idUs.errors %}
+                    {{ form.idUs(class = "form-control form-control-lg is-invalid") }}
+                    <div class = "invalid-feedback">
+                        {% for error in form.idUs.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.idUs(class = "form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <div class = "form-group">
+            {{ form.country.label(class = "form-control-label") }}
+                {{ form.country(class = "form-control form-control-lg", list = "Countries") }}
+                <datalist id = "Countries">
+                    {% for Country in countries %}
+                        <option value = "{{ Country }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+
             <div class = "form-check">
                 {{ form.restaurante(class = "form-check-input") }}
                 {{ form.restaurante.label(class = "form-check-label") }}
@@ -45,6 +84,14 @@
             <div class = "form-check">
                 {{ form.transporte(class = "form-check-input") }}
                 {{ form.transporte.label(class = "form-check-label") }}
+            </div>
+            <div class = "form-check">
+                {{ form.lavanderia(class = "form-check-input") }}
+                {{ form.lavanderia.label(class = "form-check-label") }}
+            </div>
+            <div class = "form-check">
+                {{ form.guia(class = "form-check-input") }}
+                {{ form.guia.label(class = "form-check-label") }}
             </div>
         </fieldset>
         <div class = "form-group">
