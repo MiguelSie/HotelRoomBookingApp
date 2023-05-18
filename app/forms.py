@@ -9,9 +9,14 @@ class dateForm(FlaskForm):
     totPeople=IntegerField('Cantidad de personas',validators=[DataRequired()], default=1)
     submit=SubmitField('Reservar')
     
-    def validate_date(self,date):
-        if self.dateStart.data<datetime.date.today() or self.dateFinish.data<self.dateStart.data:
+    def validate_dateStart(self, dateStart):
+        if self.dateStart.data<datetime.datetime.now().date():
             raise ValidationError('Solo puedes reservar una fecha a partir de hoy')
+        
+    def validate_dateFinish(self, dateFinish):
+        if self.dateStart.data>self.dateFinish.data:
+            raise ValidationError('Ingrese una fecha válida')
+    
         
 class bookingForm(FlaskForm):
     #dateStart = DateField('Fecha de inicio',validators=[DataRequired()],format='%m/%d/%Y')
