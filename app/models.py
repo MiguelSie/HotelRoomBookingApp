@@ -6,7 +6,6 @@ class Habitacion(db.Model):
     acomodacion = db.Column(db.String(20), nullable=False)
     capacidad = db.Column(db.Integer, nullable=False)
     precio = db.Column(db.Integer, nullable=False)
-    fechaParo = db.Column(db.Date)
     reserva = db.relationship('Reserva', backref='habitacion', lazy=True)
     
     def __repr__(self):
@@ -28,6 +27,16 @@ class Reserva(db.Model):
     parqueadero = db.Column(db.Boolean, nullable=False)
     lavanderia = db.Column(db.Boolean, nullable=False)
     guia = db.Column(db.Boolean, nullable=False)
+    pago = db.Column(db.Boolean, nullable=False)
     
     def __repr__(self):
         return f"Reserva('{self.idhabitacion}', '{self.fechaInicio}', '{self.fechaFin}', '{self.totPeople}', '{self.email}', '{self.name}', '{self.surname}', '{self.idUs}', '{self.country}', '{self.restaurante}', '{self.transporte}', '{self.parqueadero}', '{self.lavanderia}', '{self.guia}')"
+
+
+class Paros(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    fechaInicio = db.Column(db.Date, nullable=False)
+    fechaFin = db.Column(db.Date, nullable=False)
+    
+    def __repr__(self):
+        return f"Paro('{self.fechaInicio}', '{self.fechaFin}')"
