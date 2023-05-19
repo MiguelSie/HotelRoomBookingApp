@@ -70,7 +70,7 @@ def index():
 def rooms():
     return render_template('rooms.html', title='Rooms', habitaciones = habitaciones, acomodaciones = acomodaciones)
 
-@app.route("/booking", methods = ['GET', 'POST'])
+@app.route("/booking/Sencilla", methods = ['GET', 'POST'])
 def book():
     form = bookingForm()
     if form.validate_on_submit():

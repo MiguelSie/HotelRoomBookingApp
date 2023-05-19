@@ -5,10 +5,10 @@
             <article class="media content-section">
                 <div class="media-body">
                 <div class="article-metadata">
-                    <a class="mr-2" href="#">{{ (habitaciones|selectattr('acomodacion', 'eq', Acomodacion)|first).tipo }}</a>
+                    <a>{{ (habitaciones|selectattr('acomodacion', 'eq', Acomodacion)|first).tipo }}</a>
                     <small class="text-muted"> capacidad: {{ (habitaciones|selectattr('acomodacion', 'eq', Acomodacion)|first).capacidad }} personas/s </small>
                 </div>
-                <h2><a class="article-title" href="#">{{ (habitaciones|selectattr('acomodacion', 'eq', Acomodacion)|first).acomodacion }}</a></h2>
+                <h2><a class="article-title" href="/booking/{{Acomodacion}}">{{ (habitaciones|selectattr('acomodacion', 'eq', Acomodacion)|first).acomodacion }}</a></h2>
                 <p class="article-content">precio: {{ (habitaciones|selectattr('acomodacion', 'eq', Acomodacion)|first).precio }} por noche</p>
                 </div>
             </article>
