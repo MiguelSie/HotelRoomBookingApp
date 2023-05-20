@@ -1,0 +1,9 @@
+Las habitaciones sencillas unicamente aparecerán cuando la reserva sea para una
+persona. Si quieres reservar para 2 o más, tendrás que reservar la doble o la 
+múltiple (la doble también se puede reservar para 1 persona). Si no hay habitaciones 
+para 2, podrás reservar la múltiple, y no se asegura que vayas a estar con tu pareja, 
+pues si todas las múltiples están ocupadas con 4 personas, tendrás que estar alejado 
+de tu pareja. Para 3 o más, la única opción serán las habitaciones múltiples. Si son 
+menos de 5, su reserva se puede llenar con otras personas hasta la capacidad máxima 
+de la habitación. Si son más de 5, se les asignarán varias habitaciones donde se 
+puedan dividir según la disponibilidad. 
