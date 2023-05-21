@@ -14,38 +14,44 @@ habitaciones = []
 
 @app.route('/', methods = ['GET', 'POST'])
 @app.route('/home', methods = ['GET', 'POST'])
-def index():
+def index():  # sourcery skip: low-code-quality, sum-comprehension
     form = dateForm()
     if form.validate_on_submit():
         global habitaciones
         habitaciones = Habitacion.query.all()
         habitacionesTest = Habitacion.query.all()
         
-        acomodaciones = ["Sencilla", "Doble"]
-
-        for acomodacion in acomodaciones:
-            habitacionesAcomodacion = Habitacion.query.filter_by(acomodacion=acomodacion).all()
-            for habitacion in habitacionesAcomodacion:
-                reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
-                for reservacion in reservas:
-                    if (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateFinish.data) or (reservacion.fechaInicio >= form.dateStart.data and reservacion.fechaFin <= form.dateFinish.data) or (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateStart.data) or (reservacion.fechaInicio <= form.dateFinish.data and reservacion.fechaFin >= form.dateFinish.data):
-                        habitaciones.remove(habitacion)
-                        break
-        
         for habitacion in habitacionesTest:
             if habitacion in habitaciones and ((habitacion.acomodacion == "Sencilla" and form.totPeople.data > habitacion.capacidad) or (habitacion.acomodacion == "Doble" and form.totPeople.data > habitacion.capacidad)): 
                 habitaciones.remove(habitacion)
+        
+        acomodaciones = ["Sencilla", "Doble"]
+        for acomodacion in acomodaciones:
+            habitacionesAcomodacion = Habitacion.query.filter_by(acomodacion=acomodacion).all()
+            for habitacion in habitacionesAcomodacion:
+                if habitacion in habitaciones:
+                    reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
+                    for reservacion in reservas:
+                        if (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateFinish.data) or (reservacion.fechaInicio >= form.dateStart.data and reservacion.fechaFin <= form.dateFinish.data) or (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateStart.data) or (reservacion.fechaInicio <= form.dateFinish.data and reservacion.fechaFin >= form.dateFinish.data):
+                            habitaciones.remove(habitacion)
+                            break
 
-        #Cambiar para que dependa de la cantidad de gente que ha reservado cerca de esas fechas, de manera que se pueda ver si en esa fecha hay capacidad para asignar
-        #Reservas de habitaciones multiples o no.
-        totalMultiples = sum(
-            habitacion.capacidad
-            for habitacion in habitaciones
-            if habitacion.acomodacion == "Multiple"
-        )
+        totalMultiples = 0
+        sumaReservas = 0
+        for habitacion in habitacionesTest:
+            if habitacion.acomodacion == "Multiple":
+                reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
+                sumaReservas = 0
+                for reservacion in reservas:
+                    if (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateFinish.data) or (reservacion.fechaInicio >= form.dateStart.data and reservacion.fechaFin <= form.dateFinish.data) or (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateStart.data) or (reservacion.fechaInicio <= form.dateFinish.data and reservacion.fechaFin >= form.dateFinish.data):
+                        sumaReservas += reservacion.totPeople
+                if sumaReservas == habitacion.capacidad:
+                    habitaciones.remove(habitacion)
+                totalMultiples += sumaReservas
+        totalMultiples = 50 - totalMultiples 
         
         if totalMultiples<form.totPeople.data and form.totPeople.data>2:
-            flash(f'No hay habitaciones disponibles para {form.totPeople.data} personas', 'danger')
+            flash(f'No hay habitaciones disponibles para {form.totPeople.data} personas en la fecha ingresada', 'danger')
             return redirect(url_for('index'))
         
         paros = Paros.query.all()
@@ -62,7 +68,7 @@ def index():
         reserva.fechaInicio = form.dateStart.data
         reserva.fechaFin = form.dateFinish.data
         reserva.totPeople = form.totPeople.data
-        #reserva.idhabitacion = 1
+        
         flash(f'Buscando habitaciones para {form.dateStart.data.strftime("%d/%m/%y")} hasta {form.dateFinish.data.strftime("%d/%m/%y")} para {form.totPeople.data} personas', 'success')
         return redirect(url_for('rooms'))
 
@@ -81,76 +87,103 @@ def rooms():
 def bookSencilla():
     form = bookingForm()
     if form.validate_on_submit():
-        if form.name.data == "Miguel" and form.email.data == "miguel109737@gmail.com" and form.surname.data == "Sierra":
-            global reserva
-            reserva.name = form.name.data
-            reserva.surname = form.surname.data
-            reserva.email = form.email.data
-            reserva.idUs = form.idUs.data
-            reserva.country = form.country.data
-            reserva.restaurante = form.restaurante.data
-            reserva.parqueadero = form.parqueadero.data
-            reserva.transporte = form.transporte.data
-            reserva.lavanderia = form.lavanderia.data
-            reserva.guia = form.guia.data
-            reserva.pago = True
-            db.session.add(reserva)
-            db.session.commit()
-            reserva = Reserva()
-            flash('¡Se ha realizado su reserva exitosamente!', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash('Su reserva no se ha podido realizar.', 'danger')
+        global reserva
+        reserva.name = form.name.data
+        reserva.surname = form.surname.data
+        reserva.email = form.email.data
+        reserva.idUs = form.idUs.data
+        reserva.country = form.country.data
+        reserva.restaurante = form.restaurante.data
+        reserva.parqueadero = form.parqueadero.data
+        reserva.transporte = form.transporte.data
+        reserva.lavanderia = form.lavanderia.data
+        reserva.guia = form.guia.data
+        reserva.pago = True
+        
+        for habitacion in habitaciones:
+            if habitacion.acomodacion == "Sencilla":
+                reserva.idhabitacion = habitacion.id
+                break
+        
+        db.session.add(reserva)
+        db.session.commit()
+        reserva = Reserva()
+        flash('¡Se ha realizado su reserva exitosamente!', 'success')
+        return redirect(url_for('index'))
     return render_template('booking.html', title='Bookings', form=form, countries = countries)
 
 @app.route("/booking/Doble", methods = ['GET', 'POST'])
 def bookDoble():
     form = bookingForm()
     if form.validate_on_submit():
-        if form.name.data == "Miguel" and form.email.data == "miguel109737@gmail.com" and form.surname.data == "Sierra":
-            global reserva
-            reserva.name = form.name.data
-            reserva.surname = form.surname.data
-            reserva.email = form.email.data
-            reserva.idUs = form.idUs.data
-            reserva.country = form.country.data
-            reserva.restaurante = form.restaurante.data
-            reserva.parqueadero = form.parqueadero.data
-            reserva.transporte = form.transporte.data
-            reserva.lavanderia = form.lavanderia.data
-            reserva.guia = form.guia.data
-            reserva.pago = True
-            db.session.add(reserva)
-            db.session.commit()
-            reserva = Reserva()
-            flash('¡Se ha realizado su reserva exitosamente!', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash('Su reserva no se ha podido realizar.', 'danger')
+        global reserva
+        reserva.name = form.name.data
+        reserva.surname = form.surname.data
+        reserva.email = form.email.data
+        reserva.idUs = form.idUs.data
+        reserva.country = form.country.data
+        reserva.restaurante = form.restaurante.data
+        reserva.parqueadero = form.parqueadero.data
+        reserva.transporte = form.transporte.data
+        reserva.lavanderia = form.lavanderia.data
+        reserva.guia = form.guia.data
+        reserva.pago = True
+        
+        for habitacion in habitaciones:
+            if habitacion.acomodacion == "Doble":
+                reserva.idhabitacion = habitacion.id
+                break
+        
+        db.session.add(reserva)
+        db.session.commit()
+        reserva = Reserva()
+        flash('¡Se ha realizado su reserva exitosamente!', 'success')
+        return redirect(url_for('index'))
     return render_template('booking.html', title='Bookings', form=form, countries = countries)
 
 @app.route("/booking/Multiple", methods = ['GET', 'POST'])
-def bookMultiple():
+def bookMultiple():  # sourcery skip: low-code-quality, sum-comprehension
     form = bookingForm()
     if form.validate_on_submit():
-        if form.name.data == "Miguel" and form.email.data == "miguel109737@gmail.com" and form.surname.data == "Sierra":
-            global reserva
-            reserva.name = form.name.data
-            reserva.surname = form.surname.data
-            reserva.email = form.email.data
-            reserva.idUs = form.idUs.data
-            reserva.country = form.country.data
-            reserva.restaurante = form.restaurante.data
-            reserva.parqueadero = form.parqueadero.data
-            reserva.transporte = form.transporte.data
-            reserva.lavanderia = form.lavanderia.data
-            reserva.guia = form.guia.data
-            reserva.pago = True
-            db.session.add(reserva)
-            db.session.commit()
-            reserva = Reserva()
-            flash('¡Se ha realizado su reserva exitosamente!', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash('Su reserva no se ha podido realizar.', 'danger')
+        global reserva
+        global habitaciones
+
+        fechaInicio = reserva.fechaInicio
+        fechaFin = reserva.fechaFin
+        totPeople = reserva.totPeople
+        print(habitaciones)
+        for habitacion in habitaciones:
+            if habitacion.acomodacion == "Multiple" and totPeople > 0:
+                reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
+                sumaReservas = 0
+                for reservacion in reservas:
+                    if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaInicio) or (reservacion.fechaInicio <= fechaFin and reservacion.fechaFin >= fechaFin):
+                        sumaReservas += reservacion.totPeople
+                reserva.fechaInicio = fechaInicio
+                reserva.fechaFin = fechaFin
+                camasLibres = 5 - sumaReservas
+                if totPeople > 5 or totPeople >= camasLibres:
+                    reserva.totPeople = camasLibres
+                    totPeople = totPeople - camasLibres
+                else:
+                    reserva.totPeople = totPeople
+                    totPeople = 0
+                reserva.idhabitacion = habitacion.id
+                reserva.name = form.name.data
+                reserva.surname = form.surname.data
+                reserva.email = form.email.data
+                reserva.idUs = form.idUs.data
+                reserva.country = form.country.data
+                reserva.restaurante = form.restaurante.data
+                reserva.parqueadero = form.parqueadero.data
+                reserva.transporte = form.transporte.data
+                reserva.lavanderia = form.lavanderia.data
+                reserva.guia = form.guia.data
+                reserva.pago = True
+                db.session.add(reserva)
+                db.session.commit()
+                reserva = Reserva()
+
+        flash('¡Se ha realizado su reserva exitosamente!', 'success')
+        return redirect(url_for('index'))
     return render_template('booking.html', title='Bookings', form=form, countries = countries)

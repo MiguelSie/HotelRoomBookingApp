@@ -19,9 +19,6 @@ class dateForm(FlaskForm):
     
         
 class bookingForm(FlaskForm):
-    #dateStart = DateField('Fecha de inicio',validators=[DataRequired()],format='%m/%d/%Y')
-    #dateFinish = DateField('Fecha de fin',validators=[DataRequired()],format='%m/%d/%Y')
-    #totPeople=IntegerField('Cantidad de personas',validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     name = StringField('Nombre', validators=[DataRequired()])
     surname = StringField('Apellido', validators=[DataRequired()])
