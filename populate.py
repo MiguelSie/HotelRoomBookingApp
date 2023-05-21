@@ -1,5 +1,6 @@
 from app import app,db
 from datetime import datetime
+from datetime import date
 from app.models import *
 
 #Creando habitaciones ordinarias y sencillas
@@ -130,5 +131,811 @@ db.session.add(habitacion)
 
 habitacion = Habitacion(id = '42', tipo='Compartido', acomodacion='Multiple', capacidad=5, precio=50000)
 db.session.add(habitacion)
+
+#Añadiendo un paro de prueba
+paro = Paros(id = '1', fechaInicio = date(2023, 5, 30), fechaFin = date(2023, 5, 31))
+db.session.add(paro)
+
+'''
+#Llenando reservas en una fecha
+reserva = Reserva(id = '1', 
+                idhabitacion = '1', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '2', 
+                idhabitacion = '2', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '3', 
+                idhabitacion = '3', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '4', 
+                idhabitacion = '4', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '5', 
+                idhabitacion = '5', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '6', 
+                idhabitacion = '6', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '7', 
+                idhabitacion = '7', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '8', 
+                idhabitacion = '8', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '9', 
+                idhabitacion = '9', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '10', 
+                idhabitacion = '10', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '11', 
+                idhabitacion = '11', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '12', 
+                idhabitacion = '12', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '13', 
+                idhabitacion = '13', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '14', 
+                idhabitacion = '14', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '15', 
+                idhabitacion = '15', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '16', 
+                idhabitacion = '16', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '1',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+#Se llenan las dobles
+reserva = Reserva(id = '17', 
+                idhabitacion = '17', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '18', 
+                idhabitacion = '18', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '19', 
+                idhabitacion = '19', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '20', 
+                idhabitacion = '20', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '21', 
+                idhabitacion = '21', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '22', 
+                idhabitacion = '22', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '23', 
+                idhabitacion = '23', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '24', 
+                idhabitacion = '24', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '25', 
+                idhabitacion = '25', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '26', 
+                idhabitacion = '26', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '27', 
+                idhabitacion = '27', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '28', 
+                idhabitacion = '28', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '29', 
+                idhabitacion = '29', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '30', 
+                idhabitacion = '30', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '31', 
+                idhabitacion = '31', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '32', 
+                idhabitacion = '32', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '2',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '33', 
+                idhabitacion = '33', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '34', 
+                idhabitacion = '34', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '35', 
+                idhabitacion = '35', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '36', 
+                idhabitacion = '36', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '37', 
+                idhabitacion = '37', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '38', 
+                idhabitacion = '38', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '39', 
+                idhabitacion = '39', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '40', 
+                idhabitacion = '40', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '41', 
+                idhabitacion = '41', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+
+reserva = Reserva(id = '42', 
+                idhabitacion = '42', 
+                fechaInicio = date(2023, 6, 1), 
+                fechaFin = date(2023, 6, 2), 
+                totPeople = '5',
+                email = 'miguel109737@gmail.com',
+                name = 'Miguel',
+                surname = 'Sierra',
+                idUs = '100',
+                country = 'Colombia',
+                restaurante = False,
+                transporte = False,
+                parqueadero = False,
+                lavanderia = True,
+                guia = True,
+                pago = True)
+                
+db.session.add(reserva)
+'''
 
 db.session.commit()

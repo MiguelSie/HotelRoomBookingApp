@@ -151,7 +151,6 @@ def bookMultiple():  # sourcery skip: low-code-quality, sum-comprehension
         fechaInicio = reserva.fechaInicio
         fechaFin = reserva.fechaFin
         totPeople = reserva.totPeople
-        print(habitaciones)
         for habitacion in habitaciones:
             if habitacion.acomodacion == "Multiple" and totPeople > 0:
                 reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
