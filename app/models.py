@@ -24,7 +24,7 @@ class Reserva(db.Model):
     country = db.Column(db.String(40), nullable=False)
     restaurante = db.Column(db.Boolean, nullable=False)
     transporte = db.Column(db.Boolean, nullable=False)
-    parqueadero = db.Column(db.Boolean, nullable=False)
+    parqueadero = db.Column(db.Integer, nullable=False)
     lavanderia = db.Column(db.Boolean, nullable=False)
     guia = db.Column(db.Boolean, nullable=False)
     pago = db.Column(db.Boolean, nullable=False)

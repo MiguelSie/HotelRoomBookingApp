@@ -21,10 +21,12 @@ def index():  # sourcery skip: low-code-quality, sum-comprehension
         habitaciones = Habitacion.query.all()
         habitacionesTest = Habitacion.query.all()
         
+        # Eliminar habitaciones que no cumplen con la cantidad de personas
         for habitacion in habitacionesTest:
             if habitacion in habitaciones and ((habitacion.acomodacion == "Sencilla" and form.totPeople.data > habitacion.capacidad) or (habitacion.acomodacion == "Doble" and form.totPeople.data > habitacion.capacidad)): 
                 habitaciones.remove(habitacion)
         
+        # Eliminar habitaciones que no están disponibles para la fecha
         acomodaciones = ["Sencilla", "Doble"]
         for acomodacion in acomodaciones:
             habitacionesAcomodacion = Habitacion.query.filter_by(acomodacion=acomodacion).all()
@@ -36,6 +38,7 @@ def index():  # sourcery skip: low-code-quality, sum-comprehension
                             habitaciones.remove(habitacion)
                             break
 
+        # Eliminar habitaciones multiples que no están disponibles para la fecha y contar la cantidad de personas que ya están reservadas
         totalMultiples = 0
         sumaReservas = 0
         for habitacion in habitacionesTest:
@@ -50,16 +53,19 @@ def index():  # sourcery skip: low-code-quality, sum-comprehension
                 totalMultiples += sumaReservas
         totalMultiples = 50 - totalMultiples 
         
+        # Avisar si no hay suficiente espacio para realizar la reserva a x personas
         if totalMultiples<form.totPeople.data and form.totPeople.data>2:
             flash(f'No hay habitaciones disponibles para {form.totPeople.data} personas en la fecha ingresada', 'danger')
             return redirect(url_for('index'))
         
+        # Valida las fechas de los paros para no permitir reservar en esas fechas
         paros = Paros.query.all()
         for paro in paros:
             if (paro.fechaInicio <= form.dateStart.data and paro.fechaFin >= form.dateFinish.data) or (paro.fechaInicio >= form.dateStart.data and paro.fechaFin <= form.dateFinish.data) or (paro.fechaInicio <= form.dateStart.data and paro.fechaFin >= form.dateStart.data) or (paro.fechaInicio <= form.dateFinish.data and paro.fechaFin >= form.dateFinish.data):
                 flash('No hay habitaciones disponibles para esa fecha debido al paro armado', 'danger')
                 return redirect(url_for('index')) 
         
+        # Si no hay habitaciones disponibles, avisa que no se puede reservar en esa fecha
         if len(habitaciones) == 0:
             flash('No hay habitaciones disponibles para esa fecha', 'danger')
             return redirect(url_for('index'))
@@ -78,6 +84,7 @@ def index():  # sourcery skip: low-code-quality, sum-comprehension
 def rooms():
     global habitaciones
     acomodaciones = []
+    #Consigue los tipos de acomodaciones de las habitaciones disponibles para mostrarlas en el filtro
     for habitacion in habitaciones:
         if habitacion.acomodacion not in acomodaciones:
             acomodaciones.append(habitacion.acomodacion)
@@ -88,6 +95,9 @@ def bookSencilla():
     form = bookingForm()
     if form.validate_on_submit():
         global reserva
+        fechaInicio = reserva.fechaInicio
+        fechaFin = reserva.fechaFin
+        totPeople = reserva.totPeople
         reserva.name = form.name.data
         reserva.surname = form.surname.data
         reserva.email = form.email.data
@@ -100,6 +110,40 @@ def bookSencilla():
         reserva.guia = form.guia.data
         reserva.pago = True
         
+        reservas = Reserva.query.all()
+        # Valida si hay cupo en el restaurante para la fecha
+        if reserva.restaurante == True:
+            sumaRest = 0
+            for reservacion in reservas:
+                if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin > fechaInicio) or (reservacion.fechaInicio < fechaFin and reservacion.fechaFin >= fechaFin):
+                    if reservacion.restaurante == True:
+                        sumaRest += reservacion.totPeople
+            if sumaRest + totPeople > 40:
+                flash("No hay cupo en el restaurante para esa fecha", 'danger')
+                return redirect(url_for('bookSencilla'))
+        
+        #Valida si hay cupo en el parqueadero para la fecha
+        if reserva.parqueadero > 0:
+            sumaParqueadero = 0
+            for reservacion in reservas:
+                if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin > fechaInicio) or (reservacion.fechaInicio < fechaFin and reservacion.fechaFin >= fechaFin):
+                    sumaParqueadero += reservacion.parqueadero
+            if sumaParqueadero + reserva.parqueadero > 25:
+                flash("No hay cupo en el parqueadero para esa fecha", 'danger')
+                return redirect(url_for('bookSencilla'))
+            
+        #Valida si hay cupo en el transporte para la fecha
+        if reserva.transporte == True:
+            sumaTrans = 0
+            for reservacion in reservas:
+                if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin > fechaInicio) or (reservacion.fechaInicio < fechaFin and reservacion.fechaFin >= fechaFin):
+                    if reservacion.transporte == True:
+                        sumaTrans += reservacion.totPeople
+            if sumaTrans + totPeople > 20:
+                flash("No hay cupo en el transporte para esa fecha", 'danger')
+                return redirect(url_for('bookSencilla'))
+        
+        # Asigna a la reserva el id de la primera habitacion disponible
         for habitacion in habitaciones:
             if habitacion.acomodacion == "Sencilla":
                 reserva.idhabitacion = habitacion.id
@@ -117,6 +161,9 @@ def bookDoble():
     form = bookingForm()
     if form.validate_on_submit():
         global reserva
+        fechaInicio = reserva.fechaInicio
+        fechaFin = reserva.fechaFin
+        totPeople = reserva.totPeople
         reserva.name = form.name.data
         reserva.surname = form.surname.data
         reserva.email = form.email.data
@@ -129,6 +176,40 @@ def bookDoble():
         reserva.guia = form.guia.data
         reserva.pago = True
         
+        reservas = Reserva.query.all()
+        # Valida si hay cupo en el restaurante para la fecha
+        if reserva.restaurante == True:
+            sumaRest = 0
+            for reservacion in reservas:
+                if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin > fechaInicio) or (reservacion.fechaInicio < fechaFin and reservacion.fechaFin >= fechaFin):
+                    if reservacion.restaurante == True:
+                        sumaRest += reservacion.totPeople
+            if sumaRest + totPeople > 40:
+                flash("No hay cupo en el restaurante para esa fecha", 'danger')
+                return redirect(url_for('bookDoble'))
+        
+        #Valida si hay cupo en el parqueadero para la fecha
+        if reserva.parqueadero > 0:
+            sumaParqueadero = 0
+            for reservacion in reservas:
+                if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin > fechaInicio) or (reservacion.fechaInicio < fechaFin and reservacion.fechaFin >= fechaFin):
+                    sumaParqueadero += reservacion.parqueadero
+            if sumaParqueadero + reserva.parqueadero > 25:
+                flash("No hay cupo en el parqueadero para esa fecha", 'danger')
+                return redirect(url_for('bookDoble'))
+            
+        #Valida si hay cupo en el transporte para la fecha
+        if reserva.transporte == True:
+            sumaTrans = 0
+            for reservacion in reservas:
+                if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin > fechaInicio) or (reservacion.fechaInicio < fechaFin and reservacion.fechaFin >= fechaFin):
+                    if reservacion.transporte == True:
+                        sumaTrans += reservacion.totPeople
+            if sumaTrans + totPeople > 20:
+                flash("No hay cupo en el transporte para esa fecha", 'danger')
+                return redirect(url_for('bookDoble'))
+        
+        # Asigna a la reserva el id de la primera habitacion disponible
         for habitacion in habitaciones:
             if habitacion.acomodacion == "Doble":
                 reserva.idhabitacion = habitacion.id
@@ -151,8 +232,13 @@ def bookMultiple():  # sourcery skip: low-code-quality, sum-comprehension
         fechaInicio = reserva.fechaInicio
         fechaFin = reserva.fechaFin
         totPeople = reserva.totPeople
+        totPeopleReferencia = totPeople
+        j = 0
+        # Busca la cantidad de gente que tiene la habitacion multiple en esa fecha y, acorde a eso, asigna el total de gente a la habitación
+        # y si todavía hay más gente por acomodar, busca la siguiente habitación multiple y así sucesivamente
         for habitacion in habitaciones:
             if habitacion.acomodacion == "Multiple" and totPeople > 0:
+                j += 1
                 reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
                 sumaReservas = 0
                 for reservacion in reservas:
@@ -179,6 +265,40 @@ def bookMultiple():  # sourcery skip: low-code-quality, sum-comprehension
                 reserva.lavanderia = form.lavanderia.data
                 reserva.guia = form.guia.data
                 reserva.pago = True
+                if j == 1:
+                    reservas2 = Reserva.query.all()
+                    #Valida si hay cupo en el restaurante para la fecha
+                    if reserva.restaurante == True:
+                        sumaRest = 0
+                        for reservacion2 in reservas2:
+                            if (reservacion2.fechaInicio <= fechaInicio and reservacion2.fechaFin >= fechaFin) or (reservacion2.fechaInicio >= fechaInicio and reservacion2.fechaFin <= fechaFin) or (reservacion2.fechaInicio <= fechaInicio and reservacion2.fechaFin > fechaInicio) or (reservacion2.fechaInicio < fechaFin and reservacion2.fechaFin >= fechaFin):
+                                if reservacion2.restaurante == True:
+                                    sumaRest += reservacion2.totPeople
+                        if sumaRest + totPeopleReferencia > 40:
+                            flash("No hay cupo en el restaurante para esa fecha", 'danger')
+                            return redirect(url_for('bookMultiple'))
+                    
+                    #Valida si hay cupo en el parqueadero para la fecha
+                    if reserva.parqueadero > 0:
+                        sumaParqueadero = 0
+                        for reservacion2 in reservas2:
+                            if (reservacion2.fechaInicio <= fechaInicio and reservacion2.fechaFin >= fechaFin) or (reservacion2.fechaInicio >= fechaInicio and reservacion2.fechaFin <= fechaFin) or (reservacion2.fechaInicio <= fechaInicio and reservacion2.fechaFin > fechaInicio) or (reservacion2.fechaInicio < fechaFin and reservacion2.fechaFin >= fechaFin):
+                                sumaParqueadero += reservacion2.parqueadero
+                        if sumaParqueadero + reserva.parqueadero > 25:
+                            flash("No hay cupo en el parqueadero para esa fecha", 'danger')
+                            return redirect(url_for('bookMultiple'))
+                        
+                    #Valida si hay cupo en el transporte para la fecha
+                    if reserva.transporte == True:
+                        sumaTrans = 0
+                        for reservacion2 in reservas2:
+                            if (reservacion2.fechaInicio <= fechaInicio and reservacion2.fechaFin >= fechaFin) or (reservacion2.fechaInicio >= fechaInicio and reservacion2.fechaFin <= fechaFin) or (reservacion2.fechaInicio <= fechaInicio and reservacion2.fechaFin > fechaInicio) or (reservacion2.fechaInicio < fechaFin and reservacion2.fechaFin >= fechaFin):
+                                if reservacion2.transporte == True:
+                                    sumaTrans += reservacion2.totPeople
+                        if sumaTrans + totPeopleReferencia > 20:
+                            flash("No hay cupo en el transporte para esa fecha", 'danger')
+                            return redirect(url_for('bookMultiple'))
+                        
                 db.session.add(reserva)
                 db.session.commit()
                 reserva = Reserva()

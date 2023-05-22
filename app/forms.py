@@ -25,7 +25,7 @@ class bookingForm(FlaskForm):
     idUs = IntegerField('Identificación', validators=[DataRequired()])
     country = StringField('País de nacimiento', validators=[DataRequired()])
     restaurante = BooleanField('Restaurante', default=True)
-    parqueadero = BooleanField('Parqueadero', default=True)
+    parqueadero = IntegerField('Parqueadero', default=0)
     transporte = BooleanField('Transporte', default=True)
     lavanderia = BooleanField('Lavandería', default=True)
     guia = BooleanField('Guía turístico', default=True)

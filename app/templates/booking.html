@@ -77,9 +77,18 @@
                 {{ form.restaurante(class = "form-check-input") }}
                 {{ form.restaurante.label(class = "form-check-label") }}
             </div>
-            <div class = "form-check">
-                {{ form.parqueadero(class = "form-check-input") }}
-                {{ form.parqueadero.label(class = "form-check-label") }}
+            <div class = "form-group">
+                {{ form.parqueadero.label(class = "form-control-label") }}
+                {% if form.parqueadero.errors %}
+                    {{ form.parqueadero(class = "form-control form-control-lg is-invalid") }}
+                    <div class = "invalid-feedback">
+                        {% for error in form.parqueadero.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.parqueadero(class = "form-control form-control-lg") }}
+                {% endif %}
             </div>
             <div class = "form-check">
                 {{ form.transporte(class = "form-check-input") }}
