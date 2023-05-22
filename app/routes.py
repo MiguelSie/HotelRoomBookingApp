@@ -32,7 +32,7 @@ def index():  # sourcery skip: low-code-quality, sum-comprehension
                 if habitacion in habitaciones:
                     reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
                     for reservacion in reservas:
-                        if (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateFinish.data) or (reservacion.fechaInicio >= form.dateStart.data and reservacion.fechaFin <= form.dateFinish.data) or (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateStart.data) or (reservacion.fechaInicio <= form.dateFinish.data and reservacion.fechaFin >= form.dateFinish.data):
+                        if (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateFinish.data) or (reservacion.fechaInicio >= form.dateStart.data and reservacion.fechaFin <= form.dateFinish.data) or (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin > form.dateStart.data) or (reservacion.fechaInicio < form.dateFinish.data and reservacion.fechaFin >= form.dateFinish.data):
                             habitaciones.remove(habitacion)
                             break
 
@@ -43,7 +43,7 @@ def index():  # sourcery skip: low-code-quality, sum-comprehension
                 reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
                 sumaReservas = 0
                 for reservacion in reservas:
-                    if (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateFinish.data) or (reservacion.fechaInicio >= form.dateStart.data and reservacion.fechaFin <= form.dateFinish.data) or (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateStart.data) or (reservacion.fechaInicio <= form.dateFinish.data and reservacion.fechaFin >= form.dateFinish.data):
+                    if (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin >= form.dateFinish.data) or (reservacion.fechaInicio >= form.dateStart.data and reservacion.fechaFin <= form.dateFinish.data) or (reservacion.fechaInicio <= form.dateStart.data and reservacion.fechaFin > form.dateStart.data) or (reservacion.fechaInicio < form.dateFinish.data and reservacion.fechaFin >= form.dateFinish.data):
                         sumaReservas += reservacion.totPeople
                 if sumaReservas == habitacion.capacidad:
                     habitaciones.remove(habitacion)
@@ -156,7 +156,7 @@ def bookMultiple():  # sourcery skip: low-code-quality, sum-comprehension
                 reservas = Reserva.query.filter_by(idhabitacion=habitacion.id).all()
                 sumaReservas = 0
                 for reservacion in reservas:
-                    if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaInicio) or (reservacion.fechaInicio <= fechaFin and reservacion.fechaFin >= fechaFin):
+                    if (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin >= fechaFin) or (reservacion.fechaInicio >= fechaInicio and reservacion.fechaFin <= fechaFin) or (reservacion.fechaInicio <= fechaInicio and reservacion.fechaFin > fechaInicio) or (reservacion.fechaInicio < fechaFin and reservacion.fechaFin >= fechaFin):
                         sumaReservas += reservacion.totPeople
                 reserva.fechaInicio = fechaInicio
                 reserva.fechaFin = fechaFin
