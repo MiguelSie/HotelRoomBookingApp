@@ -133,10 +133,10 @@ habitacion = Habitacion(id = '42', tipo='Compartido', acomodacion='Multiple', ca
 db.session.add(habitacion)
 
 #Añadiendo un paro de prueba
-paro = Paros(id = '1', fechaInicio = date(2023, 5, 30), fechaFin = date(2023, 5, 31))
+paro = Paros(id = '1', fechaInicio = date(2024, 1, 3), fechaFin = date(2024, 1, 3))
 db.session.add(paro)
 
-
+'''
 #Llenando reservas en una fecha
 #Reservas sencillas
 reserva = Reserva(id = '1', 
@@ -1493,5 +1493,6 @@ reserva = Reserva(id = '71',
                 pago = True)
                 
 db.session.add(reserva)
+'''
 
 db.session.commit()

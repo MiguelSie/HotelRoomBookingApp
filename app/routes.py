@@ -121,6 +121,8 @@ def bookSencilla():
             if sumaRest + totPeople > 40:
                 flash("No hay cupo en el restaurante para esa fecha", 'danger')
                 return redirect(url_for('bookSencilla'))
+            cupoRestaurantes = 40 - (sumaRest + totPeople)
+            print(f"cupo restaurantes ", cupoRestaurantes)
         
         #Valida si hay cupo en el parqueadero para la fecha
         if reserva.parqueadero > 0:
@@ -131,6 +133,8 @@ def bookSencilla():
             if sumaParqueadero + reserva.parqueadero > 25:
                 flash("No hay cupo en el parqueadero para esa fecha", 'danger')
                 return redirect(url_for('bookSencilla'))
+            cupoParqueadero = 25 - (sumaParqueadero + reserva.parqueadero)
+            print (f"cupo parqueadero ", cupoParqueadero)
             
         #Valida si hay cupo en el transporte para la fecha
         if reserva.transporte == True:
@@ -142,6 +146,8 @@ def bookSencilla():
             if sumaTrans + totPeople > 20:
                 flash("No hay cupo en el transporte para esa fecha", 'danger')
                 return redirect(url_for('bookSencilla'))
+            cupoTransporte = 20 - (sumaTrans + totPeople)
+            print(f"cupo transporte ", cupoTransporte)
         
         # Asigna a la reserva el id de la primera habitacion disponible
         for habitacion in habitaciones:
@@ -187,6 +193,8 @@ def bookDoble():
             if sumaRest + totPeople > 40:
                 flash("No hay cupo en el restaurante para esa fecha", 'danger')
                 return redirect(url_for('bookDoble'))
+            cupoRestaurantes = 40 - (sumaRest + totPeople)
+            print(f"cupo restaurantes ", cupoRestaurantes)
         
         #Valida si hay cupo en el parqueadero para la fecha
         if reserva.parqueadero > 0:
@@ -197,6 +205,8 @@ def bookDoble():
             if sumaParqueadero + reserva.parqueadero > 25:
                 flash("No hay cupo en el parqueadero para esa fecha", 'danger')
                 return redirect(url_for('bookDoble'))
+            cupoParqueadero = 25 - (sumaParqueadero + reserva.parqueadero)
+            print(f"cupo parqueadero ", cupoParqueadero)
             
         #Valida si hay cupo en el transporte para la fecha
         if reserva.transporte == True:
@@ -208,6 +218,8 @@ def bookDoble():
             if sumaTrans + totPeople > 20:
                 flash("No hay cupo en el transporte para esa fecha", 'danger')
                 return redirect(url_for('bookDoble'))
+            cupoTransporte = 20 - (sumaTrans + totPeople)
+            print(f"cupo transporte ", cupoTransporte)
         
         # Asigna a la reserva el id de la primera habitacion disponible
         for habitacion in habitaciones:
@@ -277,6 +289,8 @@ def bookMultiple():  # sourcery skip: low-code-quality, sum-comprehension
                         if sumaRest + totPeopleReferencia > 40:
                             flash("No hay cupo en el restaurante para esa fecha", 'danger')
                             return redirect(url_for('bookMultiple'))
+                        cupoRestaurante = 40 - (sumaRest + totPeopleReferencia)
+                        print(f"cupo restaurante ", cupoRestaurante)
                     
                     #Valida si hay cupo en el parqueadero para la fecha
                     if reserva.parqueadero > 0:
@@ -287,6 +301,8 @@ def bookMultiple():  # sourcery skip: low-code-quality, sum-comprehension
                         if sumaParqueadero + reserva.parqueadero > 25:
                             flash("No hay cupo en el parqueadero para esa fecha", 'danger')
                             return redirect(url_for('bookMultiple'))
+                        cupoParqueadero = 25 - (sumaParqueadero + reserva.parqueadero)
+                        print(f"cupo parqueadero ", cupoParqueadero)
                         
                     #Valida si hay cupo en el transporte para la fecha
                     if reserva.transporte == True:
@@ -298,6 +314,8 @@ def bookMultiple():  # sourcery skip: low-code-quality, sum-comprehension
                         if sumaTrans + totPeopleReferencia > 20:
                             flash("No hay cupo en el transporte para esa fecha", 'danger')
                             return redirect(url_for('bookMultiple'))
+                        cupoTransporte = 20 - (sumaTrans + totPeopleReferencia)
+                        print(f"cupo transporte ", cupoTransporte)
                         
                 db.session.add(reserva)
                 db.session.commit()
